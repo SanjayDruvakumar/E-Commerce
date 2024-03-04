@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+* {
+	padding: 0px;
+	margin: 0px;
+	font-size: large;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	align-items: center;
+	text-align: center;
+    position:relative;
+}
+ .nav{
+        height: 75px;
+        color:white;
+        background: greenyellow;
+        display:flex;
+        justify-content: space-evenly;
+        align-items: center;
+        position:sticky;
+    }
+
+    .logo{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 500px;
+        height: 75px;
+    }
+    .menu{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 500px;
+        height: 75px;
+    }
+    
+    .btn{
+    border:none;
+    background:#555;
+    color:#fff;
+    border-radius:5px;
+    }
+    
+     button{
+    border:none;
+    background:transparent;
+    color:#fff;
+    }
+    span.error-message {
+			color: red;
+			font-size: 0.8em;
+		}
+    form{
+    width:800px;
+    margin-left:275px;
+    }
+    
+    table{
+    display:flex;
+    justify-content:space-evenly;
+    align-items: center;
+    text-align:center;
+    }
+</style>
+</head>
+<body>
+<nav class="nav">
+        <div class="logo">
+            <a href="/"><button><h1>MyShop</h1></button></a>
+        <a href="/"><button>Home</button></a>
+        <a href="/prducts"></a><button>Products</button></a>
+    </div>
+    <div class="menu">
+        <th:block th:if="${session.customer==null}">
+        <a href="/signin"> <button>Signin</button></a> 
+        <a href="/signup"> <button>Signup</button></a>
+         </th:block>
+         <th:block th:if="${session.customer}">
+				<th:block th:if="${session.customer.role=='ADMIN'}">
+        <a href="/admin"> <button>Admin Dashboard</button></a>
+        </th:block>
+          <a href="/cart"> <button>Cart</button></a>
+        <a href="/logout"><button>Logout</button></a>
+        </th:block>
+    </div>
+    </nav>
+	<form action="/admin/add-products" method="post" th:object="${product}" enctype="multipart/form-data">
+		<fieldset>
+			<legend>ADD PRODUCT</legend>
+
+			<img />
+			<table>
+				<tr>
+					<td><label for="name">Product Name : </label></td>
+					<td><input th:field="*{name}" type="text" class="form-control"
+						id="name" name="name" required></td>
+					<td><span class="error-message"
+						th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span></td>
+				</tr>
+				<tr>
+					<td><label for="price">Product Price : </label></td>
+					<td><input type="number" th:field="*{price}"
+						class="form-control" id="price" name="price" required></td>
+					<td><span class="error-message"
+						th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span></td>
+				</tr>
+				<tr>
+					<td><label for="category">Product Category : </label></td>
+					<td><input type="text" th:field="*{category}"
+						class="form-control" id="category" name="category" required></td>
+					<td><span class="error-message"
+						th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></span></td>
+				</tr>
+				<tr>
+					<td><label for="stock">Product Stock : </label></td>
+					<td><input type="number" th:field="*{stock}"
+						class="form-control" id="stock" name="stock" required></td>
+					<td><span class="error-message"
+						th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></span></td>
+				</tr>
+				<tr>
+					<td><label for="description">Description</label></td>
+					<td><textarea class="form-control" th:field="*{description}"
+							id="description" name="description" rows="3" required></textarea></td>
+					<td><span class="error-message"
+						th:if="${#fields.hasErrors('description')}"
+						th:errors="*{description}"></span></td>
+				</tr>
+				<tr>
+					<td><label for="picture">Product Picture : </label></td>
+					<td><input type="file" class="form-control-file"
+						id="productPicture" name="picture" required></td>
+				</tr>
+				<tr>
+					<td><button type="submit" class="btn">Add Product</button></td>
+					<td><button type="reset" class="btn">Cancel</button></td>
+				</tr>
+
+			</table>
+		</fieldset>
+	</form>
+	<footer class="py-3 text-center"> &copy; 2024 MyShop </footer>
+	
+</body>
+</html>

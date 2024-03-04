@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<style>
+    body{
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        position: relative;
+    }
+    .nav{
+        height: 75px;
+        color:white;
+        background: greenyellow;
+        display:flex;
+        justify-content: space-evenly;
+        align-items: center;
+        position: sticky;
+    }
+
+    .logo{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 500px;
+        height: 75px;
+    }
+    .menu{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 500px;
+        height: 75px;
+    }
+    
+    button{
+    border:none;
+    background:transparent;
+    color:#fff;
+    }
+</style>
+</head>
+<body>
+<div>
+    <nav class="nav">
+        <div class="logo">
+            <a href="/"><button><h1>MyShop</h1></button></a>
+        <a href="/"><button>Home</button></a>
+        <a href="/products"><button>Products</button></a>
+    </div>
+    <div class="menu">
+        <th:block th:if="${session.customer==null}">
+        <a href="/signin"> <button>Signin</button></a> 
+        <a href="/signup"> <button>Signup</button></a>
+         </th:block>
+         <th:block th:if="${session.customer}">
+				<th:block th:if="${session.customer.role=='ADMIN'}">
+        <a href="admin"> <button>Admin Dashboard</button></a>
+        </th:block>
+          <a href="/cart"> <button>Cart</button></a>
+        <a href="/logout"><button>Logout</button></a>
+        </th:block>
+    </div>
+    </nav>
+    
+    <div class="alert alert-success" th:if="${session.successMessage}" role="alert" th:text="${session.successMessage}">
+	</div>
+	<div class="alert alert-danger" th:if="${session.failMessage}" role="alert" th:text="${session.failMessage}">
+	</div>
+	<th:block th:text="${@sessionMessageRemover.removeMessage()}"></th:block>
+</div>
+
+<div class="container">
+        <h1>View Orders</h1>
+        <div th:each="order:${orders}">
+            <div class="col-md-4 product-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="'Order Date: '+${order.dateTime}"></h5>
+                        <p class="card-text" th:text="'Order Id: '+${order.orderId}"></p>
+                        <p>Price: <th:block th:text="${order.totalPrice}"></th:block>&#8377</p>
+                        <p>Items</p>
+                        <div th:each="item:${order.items}">
+                            <p th:text="${item.name}"></p>
+                            <p th:text="${item.quantity}+'x'+${item.price/item.quantity}+'='+${item.price}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="py-3 text-center"> &copy; 2024 s13shMyShop </footer>
+</body>
+</html>
